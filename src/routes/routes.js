@@ -21,7 +21,7 @@ router.get('/contact', (req, res) => {
     phone: '123-456-7890'
   });
 });
-router.get('/api', (req, res) => {
+router.get('/endpoints', (req, res) => {
   res.json({
     message: 'API endpoint',
     endpoints: [

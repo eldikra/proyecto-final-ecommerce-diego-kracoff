@@ -1,18 +1,13 @@
-import {APIKEY, AUTHDOMAIN, PROJECTID, STORAGEBUCKET, MESSAGINGSENDERID, APPID, MEASUREMENTID} from './config.js';
 import { initializeApp } from "firebase/app";
-// // import { getAnalytics } from "firebase/analytics";
-// import dotenv from 'dotenv';
-
-// dotenv.config('./.env');
 
 const firebaseConfig = {
-  apiKey: APIKEY,
-  authDomain: AUTHDOMAIN,
-  projectId: PROJECTID,
-  storageBucket: STORAGEBUCKET,
-  messagingSenderId: MESSAGINGSENDERID,
-  appId: APPID,
-  measurementId: MEASUREMENTID
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTHDOMAIN,
+  projectId: process.env.PROJECTID,
+  storageBucket: process.env.STORAGEBUCKET,
+  messagingSenderId: process.env.MESSAGINGSENDERID,
+  appId: process.env.APPID,
+  measurementId: process.env.MEASUREMENTID
 };
 
 const app = initializeApp(firebaseConfig);
