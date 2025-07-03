@@ -1,7 +1,6 @@
 /* Pendientes
 Agregar dentro de utils la parte de logs
 */
-
 import express from 'express';
 import { router } from './src/routes/routes.js';
 import { isValidEmail, logRequest } from './util.js';
@@ -11,6 +10,8 @@ import { connectToDatabase } from './database.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import notfound from './src/middlewares/not-found.js';
+import productosRoutes from './src/routes/products.js';
+import { verifyToken } from './src/middlewares/auth.middleware.js';
 
 dotenv.config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -35,16 +36,17 @@ app.use(cors(corsOptions)); // Habilita CORS para todas las rutas para la config
 app.use(express.json());
 
 app.use((req, res, next) => { //Guarda en el log la URL de la petición 
-  logRequest(req, res, next);
-  next();
+  logRequest(req, res, next); // Registra la solicitud
+  next(); // Continúa con la siguiente función middleware
 });
 
+
+app.use(express.static(__dirname + '/public')); // Sirve archivos estáticos desde el directorio 'public'
 app.use('/api', router);
-app.use(express.static(__dirname + '/public'));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
-
+app.use('/api/products', productosRoutes); // Rutas de productos
 app.use(notfound); // Middleware para manejar rutas no encontradas
 
 app.listen(process.env.PORT, () => {

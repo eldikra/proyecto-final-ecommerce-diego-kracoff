@@ -1,46 +1,28 @@
 import express from 'express';
 const router = express.Router();
-export { router };
+import { 
+  getAllProducts, 
+  searchProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct
+} from "../controllers/product.controller.js";
+// Trae todos los productos de la tienda en línea.
 
-router.get("/products", (req, res) => {
-  const { category } = req.query;
+router.get("/products", getAllProducts);
 
-  if (category) {
-    const productsFiltered = products.filter((item) =>
-      item.categories.includes(category)
-    );
+// Permite filtrar, buscar y listar productos.
+router.get("/products/search", searchProducts);
+router.get("/products/:id", getProductById)
 
-    res.json(productsFiltered);
-    return;
-  }
+//Crear nuevos productos para la tienda en línea.
+router.post("/products", createProduct);
 
-  res.json(products);
-});
+// Actualizar parcial o totalmente un producto.
+router.put("/products/:id", updateProduct);
 
-router.get("/products/search", (req, res) => {
-  const { name } = req.query;
+// Eliminar productos mediante id.
+router.delete("/products/:id",deleteProduct)
 
-  if (!name) {
-    return res.status(400).json({ error: "El nombre es requerido" });
-  }
-
-  const productsFiltered = products.filter((item) =>
-    item.name.toLowerCase().includes(name.toLowerCase())
-  );
-
-  if (productsFiltered.length == 0) {
-    return res.status(404).json({ error: "No se encontraron productos" });
-  }
-
-  res.json(productsFiltered);
-});
-router.get("/products/:id", (req, res) => {
-  const { id } = req.params;
-  const product = products.find((item) => item.id === parseInt(id));
-
-  if (!product) {
-    return res.status(404).json({ error: "Producto no encontrado" });
-  }
-
-  res.json(product);
-});
+export default router;

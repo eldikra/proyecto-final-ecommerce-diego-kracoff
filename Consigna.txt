@@ -19,10 +19,10 @@ X    ● /services: Gestionará el acceso a datos y la interacción con la base 
 X    ● /public: Archivos estáticos (opcional).
 2. Funcionalidades
     ● Gestión de productos:
-        ○ Crear nuevos productos para la tienda en línea.
-        ○ Listar, filtrar, buscar y cualquier acción de consulta sobre el listado de productos.
-        ○ Actualizar parcial o totalmente un producto.
-        ○ Eliminar productos mediante id.
+X        ○ Crear nuevos productos para la tienda en línea.
+X          ○ Listar, filtrar, buscar y cualquier acción de consulta sobre el listado de productos.
+X       ○ Actualizar parcial o totalmente un producto.
+X       ○ Eliminar productos mediante id.
     ● Manejo de errores: Implementar controladores de errores para manejar respuestas adecuadas en caso de solicitudes inválidas o fallas del servidor.
     ● CORS: Configuración para permitir solicitudes desde diferentes dominios.
 3. Seguridad
