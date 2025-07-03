@@ -1,3 +1,23 @@
+import {APIKEY, AUTHDOMAIN, PROJECTID, STORAGEBUCKET, MESSAGINGSENDERID, APPID, MEASUREMENTID} from './config.js';
+import { initializeApp } from "firebase/app";
+// // import { getAnalytics } from "firebase/analytics";
+// import dotenv from 'dotenv';
+
+// dotenv.config('./.env');
+
+const firebaseConfig = {
+  apiKey: APIKEY,
+  authDomain: AUTHDOMAIN,
+  projectId: PROJECTID,
+  storageBucket: STORAGEBUCKET,
+  messagingSenderId: MESSAGINGSENDERID,
+  appId: APPID,
+  measurementId: MEASUREMENTID
+};
+
+const app = initializeApp(firebaseConfig);
+
+
 const connectToDatabase = async () => {
   try {
     // Simulate a database connection to firebase
