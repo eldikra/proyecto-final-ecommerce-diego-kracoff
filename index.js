@@ -10,15 +10,8 @@ import productosRoutes from './src/routes/products.js';
 import { verifyToken } from './src/middlewares/auth.middleware.js';
 
 dotenv.config();
-//const __dirname = dirname(fileURLToPath(import.meta.url));
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
-const corsOptions = { // Configuracion de CORS 
-  origin: ['https://localhost:3001'],//Dominios permitidos
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],// Métodos HTTP permitidos
-  allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Credentials'],// Encabezados permitidos
-  credentials: true // Permitir cookies o credenciales
-};
-
 app.use((req, res, next) => {
   if (process.env.MANTENIMIENTO?.toLowerCase() === 'true') { // Verifica si la API está en mantenimiento
     return res.status(503).json({ message: 'API en mantenimiento', });
@@ -27,7 +20,7 @@ app.use((req, res, next) => {
 
 connectToDatabase(); //Se conecta a la base de datos
 
-app.use(cors(corsOptions)); // Habilita CORS para todas las rutas para la configuración especificada
+app.use(cors()); // Habilita CORS para todas las rutas para la configuración especificada
 app.use(express.json()); // Middleware para parsear el cuerpo de las solicitudes como JSON
 app.use((req, res, next) => { //Guarda en el log la URL de la petición 
   logRequest(req, res, next); // Registra la solicitud
