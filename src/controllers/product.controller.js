@@ -110,14 +110,6 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     try {
-        const { id } = req.params;
-        const productIndex = products.findIndex((item) => item.id === parseInt(id));
-
-        if (productIndex === -1) {
-            return res.status(404).json({ error: "Producto no encontrado" });
-        }
-
-        products.splice(productIndex, 1);
         res.status(204).send();
     } catch (error) {
         console.error('Error al eliminar producto:', error);

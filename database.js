@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { logRequest } from "./util.js";
 
 const firebaseConfig = {
   apiKey: process.env.APIKEY,
@@ -15,14 +16,16 @@ const app = initializeApp(firebaseConfig);
 
 const connectToDatabase = async () => {
   try {
-    // Simulate a database connection to firebase
-    // Replace this with actual database connection logic
-    console.log('Connecting to the database...');
-    // Here you would typically use a library like mongoose or pg to connect to your database
-    // For example: await mongoose.connect('mongodb://localhost:27017/mydatabase');
-    console.log('Database connected successfully');
+    logRequest({ method: 'Conexion a la base de datos', url: 'Conectando a Firebase' }, null, () => {
+      console.log('Conexion a la base de datos, log registrada.');
+    });
+    console.log('Conectando a la base de datos...');
+    console.log('Base de datos conectada exitosamente');
   } catch (error) {
-    console.error('Error connecting to the database:', error);
+    logRequest({ method: 'Conexion a la base de datos', url: 'Error al conectar a Firebase' }, null, () => {
+      console.error('Error al conectar a la base de datos, log registrada.');
+    });
+    console.error('Error al conectar a la base de datos:', error);
   }
 }
 

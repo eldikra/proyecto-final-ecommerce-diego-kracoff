@@ -3,8 +3,9 @@ const router = express.Router();
 export { router };
 
 router.get('/', (req, res) => {
-  res.send('Bienvenido a la API del Proyecto Final');
+  res.json({message: 'Bienvenido a la API del Proyecto Final'});
 });
+
 router.get('/status', (req, res) => {
   res.json({ status: 'El servidor está en funcionamiento' });
 });
