@@ -1,3 +1,5 @@
+import { logError } from "./../../util.js";
+
 const getAllProducts = async (req, res) => {
     try {
         const { category } = req.query;
@@ -59,24 +61,26 @@ const getProductById = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
-        const { name, price, description, categories } = req.body;
+        const { name, price, description, categories } = req.body; //Desestructuración de los campos del body de la solicitud
 
-        if (!name || !price || !description || !categories) {
+        if (!name || !price || !description || !categories) { //Verifica que todos los campos estén presentes
+            logError({message:"Todos los campos son requeridos"}, req);
             return res.status(400).json({ error: "Todos los campos son requeridos" });
         }
 
-        const newProduct = {
-            id: products.length + 1,
+        const newProduct = { //Crea un nuevo producto con los datos proporcionados
+            id: products.length + 1, //Asigna un ID único al nuevo producto pero en la base de datos sera generado automáticamente
             name,
             price,
             description,
             categories
         };
 
-        products.push(newProduct);
-        res.status(201).json(newProduct);
-    } catch (error) {
+        products.push(newProduct);//Agrega el nuevo producto al array de productos o a la base de datos
+        res.status(201).json(newProduct); //Devuelve el nuevo producto creado con un código de estado 201 (Creado)
+    } catch (error) { //Manejo de errores
         console.error('Error al crear producto:', error);
+        logError({message: error}, req);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 }

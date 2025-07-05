@@ -1,3 +1,6 @@
+/*
+Modo debugging: Agregar variable de entorno DEBUG=true al ejecutar el servidor
+*/
 import express from 'express';
 import { router } from './src/routes/routes.js';
 import { isValidEmail, logRequest } from './util.js';
@@ -37,6 +40,5 @@ app.use((req, res, next) => {
 });
 
 app.listen(process.env.PORT, () => {
-  logRequest({ method: 'Server Start', url: `http://localhost:${process.env.PORT}` }, null, () => {
-    console.log('Servidor iniciado y log registrado.')}); // Log de inicio del servidor
+  logRequest({ method: 'Server Start', url: `http://localhost:${process.env.PORT}` }, null); // Log de inicio del servidor
 });
