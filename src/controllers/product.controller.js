@@ -1,41 +1,15 @@
-import { parse } from "dotenv";
 import { logError } from "./../../util.js";
 import * as model from "./../models/product.model.js";
 
 const getAllProducts = async (req, res) => {
-    try {
-        res.json(await model.getAllProducts());
-    } catch (error) {
-        console.error('Error al obtener productos:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+    const { category } = req.query; // Obtiene la categoría desde los parámetros de la solicitud
+    const products = await model.getAllProducts(); // Obtiene todos los productos desde el modelo
+    if (!products || products.length === 0) { // Verifica si se obtuvieron productos
+        logError({ message: "No se encontraron productos" }, req); // Registra el error si no se encontraron productos
+        return res.status(404).json({ error: "No se encontraron productos" }); //
     }
-}
-
-const searchProducts = async (req, res) => {
-    try {
-        const { name } = req.query;
-
-        if (!name) {// Verifica si el nombre fue proporcionado
-            logError({ message: "El nombre es requerido" }, req);
-            return res.status(400).json({ error: "El nombre es requerido" });
-        }
-        const products = model.getAllProducts();
-        const productsFiltered = products.filter((item) => // Filtra los productos por nombre
-            item.name.toLowerCase().includes(name.toLowerCase()) // Compara el nombre del producto con el nombre de búsqueda
-        );
-
-        if (productsFiltered.length == 0) {// Verifica si se encontraron productos
-            logError({ message: "No se encontraron productos" }, req);
-            return res.status(404).json({ error: "No se encontraron productos" });
-        }
-
-        res.json(productsFiltered);// Devuelve los productos filtrados
-    } catch (error) {
-        logError({ message: error }, req);
-        console.error('Error al buscar productos:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
-   }
-   
+    res.json(products); // Devuelve los productos filtrados o todos los productos si no se proporciona una categoría;
+    return
 }
 
 const getProductById = async (req, res) => {
@@ -52,7 +26,32 @@ const getProductById = async (req, res) => {
         console.error('Error al obtener producto por ID:', error);
         res.status(500).json({ error: 'Error interno del servidor' });// Devuelve un error 500 si ocurre un problema interno del servidor
     }
-};
+}
+
+const searchProducts = async (req, res) => {
+    try {
+        const { name } = req.query;
+        if (!name) {// Verifica si el nombre fue proporcionado
+            logError({ message: "El nombre es requerido" }, req);
+            return res.status(400).json({ error: "El nombre es requerido" });
+        }
+        
+        const products = model.getProductByName(name); // Obtiene los productos filtrados por nombre desde el modelo
+        
+        if (!products) { // Verifica si se obtuvieron productos
+            logError({ message: "No se encontraron productos" }, req.body,req.error);
+            return res.status(404).json({ error: "No se encontraron productos" });
+        }
+        // res.json(resultados.docs.map(doc => doc.data()));// Devuelve los productos filtrados por nombre
+        return;
+
+    } catch (error) {
+        logError({ message: error }, req);
+        console.error('Error al buscar productos:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+
+}
 
 const createProduct = async (req, res) => {
     try {
@@ -61,7 +60,7 @@ const createProduct = async (req, res) => {
             logError({ message: "Todos los campos son requeridos" }, req);
             return res.status(400).json({ error: "Todos los campos son requeridos" });
         }
-        const newProduct = model.createProduct({name, price, description, category}); //Crea un nuevo producto utilizando el modelo
+        const newProduct = model.createProduct({ name, price, description, category }); //Crea un nuevo producto utilizando el modelo
 
         res.status(201).json(newProduct); //Devuelve el nuevo producto creado con un código de estado 201 (Creado)
     } catch (error) { //Manejo de errores
@@ -103,7 +102,7 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = (req, res) => {
     try {
-        const id = parseInt(req.params.id,10); // Obtiene el ID del producto a eliminar desde los parámetros de la solicitud
+        const id = parseInt(req.params.id, 10); // Obtiene el ID del producto a eliminar desde los parámetros de la solicitud
         model.deleteProduct(id);
         res.status(204).send(); // En este caso, no se devuelve contenido, solo un código de estado 204 (No Content)
     } catch (error) {

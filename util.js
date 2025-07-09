@@ -32,6 +32,7 @@ function logRequest(req,res) {
 
 function logError(err, req) { //pendiente de implementar
   const errorLog = [];
+  console.log('Logging error:',err);
   errorLog.push('\n', '--- Error Log ---');//Marca el inicio del log de errores
   errorLog.push(`Error Message: ${err.message || 'No error message provided'}`);//Guarda en un log el mensaje de error
   errorLog.push(`Request URL: ${req.url || 'No url'}`);//Guarda en un log la URL de la petición que causó el error
