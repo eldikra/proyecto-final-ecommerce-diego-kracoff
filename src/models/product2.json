@@ -1,0 +1,218 @@
+[
+  {
+    "id": "1",
+    "name": "Wireless Mouse",
+    "description": "Ergonomic wireless mouse with USB receiver.",
+    "price": 19.99,
+    "category": [
+      "Electronics",
+      "Accessories",
+      "Computer"
+    ],
+    "image": "mouse.jpg"
+  },
+  {
+    "id": "2",
+    "name": "Bluetooth Headphones",
+    "description": "Over-ear headphones with noise cancellation.",
+    "price": 59.99,
+    "category": [
+      "Electronics",
+      "Accessories"
+    ],
+    "image": "headphones.jpg"
+  },
+  {
+    "id": "3",
+    "name": "Coffee Mug",
+    "description": "Ceramic mug with 350ml capacity.",
+    "price": 7.99,
+    "category": [
+      "Kitchen"
+    ],
+    "image": "mug.jpg"
+  },
+  {
+    "id": "4",
+    "name": "Notebook",
+    "description": "A5 lined notebook with 100 pages.",
+    "price": 4.99,
+    "category": [
+      "Stationery",
+      "Office"
+    ],
+    "image": "notebook.jpg"
+  },
+  {
+    "id": "5",
+    "name": "Desk Lamp",
+    "description": "LED desk lamp with adjustable brightness.",
+    "price": 24.99,
+    "category": [
+      "Home",
+      "Lighting",
+      "Decor"
+    ],
+    "image": "lamp.jpg"
+  },
+  {
+    "id": "6",
+    "name": "Water Bottle",
+    "description": "Stainless steel water bottle, 500ml.",
+    "price": 12.99,
+    "category": [
+      "Sports"
+    ],
+    "image": "bottle.jpg"
+  },
+  {
+    "id": "7",
+    "name": "Yoga Mat",
+    "description": "Non-slip yoga mat, 6mm thick.",
+    "price": 21.99,
+    "category": [
+      "Sports"
+    ],
+    "image": "yogamat.jpg"
+  },
+  {
+    "id": "8",
+    "name": "Backpack",
+    "description": "Water-resistant backpack with laptop compartment.",
+    "price": 34.99,
+    "category": [
+      "Accessories"
+    ],
+    "image": "backpack.jpg"
+  },
+  {
+    "id": "9",
+    "name": "Smart Watch",
+    "description": "Fitness tracker with heart rate monitor.",
+    "price": 49.99,
+    "category": [
+      "Electronics"
+    ],
+    "image": "smartwatch.jpg"
+  },
+  {
+    "id": "10",
+    "name": "Scented Candle",
+    "description": "Lavender scented candle, 200g.",
+    "price": 9.99,
+    "category": [
+      "Home"
+    ],
+    "image": "candle.jpg"
+  },
+  {
+    "id": "11",
+    "name": "USB Flash Drive",
+    "description": "32GB USB 3.0 flash drive.",
+    "price": 8.99,
+    "category": [
+      "Electronics"
+    ],
+    "image": "usb.jpg"
+  },
+  {
+    "id": "12",
+    "name": "Running Shoes",
+    "description": "Lightweight running shoes for men.",
+    "price": 39.99,
+    "category": [
+      "Sports"
+    ],
+    "image": "shoes.jpg"
+  },
+  {
+    "id": "13",
+    "name": "Wireless Charger",
+    "description": "Fast wireless charging pad for smartphones.",
+    "price": 18.99,
+    "category": [
+      "Electronics"
+    ],
+    "image": "charger.jpg"
+  },
+  {
+    "id": "14",
+    "name": "Travel Pillow",
+    "description": "Memory foam travel neck pillow.",
+    "price": 14.99,
+    "category": [
+      "Travel"
+    ],
+    "image": "pillow.jpg"
+  },
+  {
+    "id": "15",
+    "name": "Electric Kettle",
+    "description": "1.7L electric kettle with auto shut-off.",
+    "price": 29.99,
+    "category": [
+      "Kitchen"
+    ],
+    "image": "kettle.jpg"
+  },
+  {
+    "id": "16",
+    "name": "Gaming Keyboard",
+    "description": "Mechanical keyboard with RGB lighting.",
+    "price": 54.99,
+    "category": [
+      "Electronics"
+    ],
+    "image": "keyboard.jpg"
+  },
+  {
+    "id": "17",
+    "name": "Sunglasses",
+    "description": "Polarized sunglasses with UV protection.",
+    "price": 15.99,
+    "category": [
+      "Accessories"
+    ],
+    "image": "sunglasses.jpg"
+  },
+  {
+    "id": "18",
+    "name": "Portable Speaker",
+    "description": "Bluetooth portable speaker, waterproof.",
+    "price": 27.99,
+    "category": [
+      "Electronics"
+    ],
+    "image": "speaker.jpg"
+  },
+  {
+    "id": "19",
+    "name": "Fitness Tracker",
+    "description": "Activity tracker with sleep monitoring.",
+    "price": 22.99,
+    "category": [
+      "Electronics"
+    ],
+    "image": "fitnesstracker.jpg"
+  },
+  {
+    "id": "20",
+    "name": "Desk Organizer",
+    "description": "Multi-compartment desk organizer for stationery.",
+    "price": 11.99,
+    "category": [
+      "Stationery"
+    ],
+    "image": "organizer.jpg"
+  },
+  {
+    "id": "21",
+    "name": "Iphone Case Black",
+    "price": 150,
+    "description": "Funda para Iphone",
+    "categories": [
+      "electronica",
+      "fundas"
+    ]
+  }
+]
