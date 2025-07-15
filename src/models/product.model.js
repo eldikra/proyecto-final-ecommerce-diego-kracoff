@@ -1,13 +1,13 @@
 import { logError, logInfo, logRequest } from '../../util.js';
 import { db } from './firebase.js'; // Importa la instancia de Firestore si es necesario
-import { collection, getDocs, getDoc, addDoc, deleteDoc, updateDoc, doc, query, where, onSnapshot } from 'firebase/firestore'; // Importa las funciones necesarias de Firestore. Crear, traer, eliminar y actualizar documentos
+import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, where,getDoc } from 'firebase/firestore'; // Importa las funciones necesarias de Firestore. Crear, traer, eliminar y actualizar documentos
 
 const productsCollection = collection(db, "products"); // Colección de productos en Firestore
 
 export const getAllProducts = async () => {
     try {
         const AllProducts = await getDocs(productsCollection);// Obtiene todos los documentos de la colección de productos
-        logRequest({ method: 'GET', url: '/api/products PRPRPRPRPRPRP' });
+        logRequest({ method: 'GET', url: '/api/products' });
         logInfo('Productos obtenidos:', AllProducts.docs.map((doc) => ({ id: doc.id, ...doc.data() }))); // Imprime la cantidad de productos obtenidos
         return AllProducts.docs.map((doc) => ({ id: doc.id, ...doc.data() })); // Mapea los documentos a un array de productos con su ID
     } catch (error) {
@@ -46,8 +46,8 @@ export const createProduct = async (producto) => {
 export const getProductById = async (id) => {
    try {
         const idAsNumber = parseInt(id); // aseguramos que es un número
-        const q = query(productsCollection, where("id", "==", idAsNumber));// Crea una consulta para buscar productos por ID de campo
-        const querySnapshot = await getDocs(q);// Ejecuta la consulta para obtener los productos con el ID especificado
+        const productQuery = query(productsCollection, where("id", "==", idAsNumber));// Crea una consulta para buscar productos por ID de campo
+        const querySnapshot = await getDocs(productQuery);// Ejecuta la consulta para obtener los productos con el ID especificado
         if (querySnapshot.empty) {
             logInfo(`No se encontró producto con id: ${idAsNumber}`);
             return null;
@@ -62,8 +62,8 @@ export const getProductById = async (id) => {
 export const updateProduct = async (id, updatedProduct) => {  //pendiente de implementar
     try {
         const idAsNumber = parseInt(id); // si tus IDs internos son números
-        const q = query(productsCollection, where("id", "==", idAsNumber));
-        const snapshot = await getDocs(q);
+        const productQuery = query(productsCollection, where("id", "==", idAsNumber));
+        const snapshot = await getDocs(productQuery);
 
         if (snapshot.empty) {
             logInfo(`No se encontró producto con id interno: ${id}`);
@@ -84,8 +84,8 @@ export const updateProduct = async (id, updatedProduct) => {  //pendiente de imp
 export const deleteProduct = async (id) => {
     try {
         const idAsNumber = parseInt(id); // Aseguramos que sea número si corresponde
-        const q = query(productsCollection, where("id", "==", idAsNumber));
-        const snapshot = await getDocs(q);
+        const productQuery = query(productsCollection, where("id", "==", idAsNumber));
+        const snapshot = await getDocs(productQuery);
 
         if (snapshot.empty) {
             logInfo(`No se encontró producto con id interno: ${id}`);
@@ -104,8 +104,8 @@ export const deleteProduct = async (id) => {
 }
 export const getProductByName = async (name) => {
     try {
-        const q = query(productsCollection, where("nombre", "==", name));
-        const snapshot = await getDocs(q);
+        const productQuery = query(productsCollection, where("nombre", "==", name));
+        const snapshot = await getDocs(productQuery);
 
         if (snapshot.empty) {
             logInfo(`No se encontraron productos con el nombre: ${name}`);

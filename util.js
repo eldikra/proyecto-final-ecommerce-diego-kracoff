@@ -1,5 +1,8 @@
 import fs from 'fs';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
 
+const JWT_SECRET = process.env.JWT_SECRET
 function isValidEmail(email) {
   // Validacion de email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -40,7 +43,18 @@ function logError(err, req) { //pendiente de implementar
   errorLog.push(`Request Date: ${new Date().toISOString()}`);//Guarda en un log la fecha de la petición que causó el error
   fs.appendFile('request.log', errorLog.join('\n'), (err) => {
     if (err) throw err;
+    logError(new Error("Error al guardar el log de errores"), { url: req.url, method: req.method });
     console.log('Error logged successfully.  UTILS.JS');
   });
 }
-export { isValidEmail, logRequest, logError, logInfo };
+
+function tokenGenerator(user) {
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+  if (!token) {
+    logError(new Error("Token generation failed"), { url: '/auth/login', method: 'POST' });
+    return null; // Return null if token generation fails
+  }
+  return token;
+}
+
+export { isValidEmail, logRequest, logError, logInfo, tokenGenerator };

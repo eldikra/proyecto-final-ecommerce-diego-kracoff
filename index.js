@@ -8,13 +8,13 @@ Agregar validación de email en el body de las peticiones
 */
 import express from 'express';
 import { router } from './src/routes/routes.js';
-import { isValidEmail, logInfo, logRequest } from './util.js';
+import { logInfo, logRequest } from './util.js';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import productosRoutes from './src/routes/products.js';
-import { verifyToken } from './src/middlewares/auth.middleware.js';
+import authRoutes from './src/routes/auth.js';
 
 dotenv.config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -42,13 +42,13 @@ app.use((req, res, next) => { //Guarda en el log la URL de la petición
 
 app.use('/api', router);
 app.use('/api/products', productosRoutes); // Rutas de productos
-
+app.use('/api/auth',authRoutes); // Rutas de autenticación
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Ruta no encontrada' });
 });
 
-app.listen(process.env.PORT, () => {
-  logRequest({ method: 'Server Start', url: `http://localhost:${process.env.PORT}` }, null); // Log de inicio del servidor
+app.listen(process.env.PORT || 3000, () => {
+  logRequest({ method: 'Server Start', url: `http://localhost:${process.env.PORT || 3000}` }, null); // Log de inicio del servidor
 });
