@@ -45,7 +45,9 @@ app.use((req, res, next) => { //Guarda en el log la URL de la petición
   logRequest(req, res, next); // Registra la solicitud
   next(); // Continúa con la siguiente función middleware
 });
-
+app.use('/', (req, res) => { // Ruta raíz para la API
+  res.json({ message: 'Bienvenido a la API 2025' });
+});
 app.use('/api', router);// Rutas de la API principal con informacion general
 app.use('/auth', authRoutes); // Rutas de autenticación
 
