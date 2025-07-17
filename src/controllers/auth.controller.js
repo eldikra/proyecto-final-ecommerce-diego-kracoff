@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { createUser, findUserByEmail } from "../models/user.model.js"
-import { tokenGenerator } from "../../util.js";
+import { logInfo, tokenGenerator } from "../../util.js";
 import { logError } from "../../util.js";
 import bodyParser from 'body-parser';
 
@@ -19,6 +19,7 @@ export async function register(req, res) {
 	}else{
 	const passwordHash = await bcrypt.hash(password, 10);
 	const user = await createUser({ email, password: passwordHash, role: "user", enabled: true });
+	logInfo(`Usuario creado: ${user.email}`); // Log the user creation
 	return res.status(201).json({ message: "Usuario creado", email: user.email })
 	}
 }
@@ -33,7 +34,7 @@ export async function login(req, res) {
 		logError(new Error("Usuario no encontrado"), req);
 		return res.status(404).json({ message: "Usuario inexistente" });
 	}
-	if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+	if (!(await bcrypt.compare(password, user.passwordHash))) {
 		console.log('password', password, 'user.passwordHash', user.passwordHash);
 		return res.status(401).json({ message: 'Email o contraseña inválidos' });
 	}
@@ -43,6 +44,7 @@ export async function login(req, res) {
 		logError(new Error("Error al generar el token"), req);
 		return res.status(500).json({ message: "Error al generar el token" });
 	} else {
+		logInfo(`Usuario autenticado: ${user.email}`); // Log the user authentication
 		res.json({ message: "Inicio de sesión exitoso", token });// Return the token in the response
 	}
 }
