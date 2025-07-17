@@ -16,26 +16,25 @@ function logInfo(message) {
   infoLog.push(`Request Date: ${new Date().toISOString()}`);//Guarda en un log la fecha de la petición
   fs.appendFile('request.log', infoLog.join('\n'), (err) => {
     if (err) throw err;
-    console.log('Info logged successfully.  UTILS.JS');
+    console.log('Informacion guardada en el log request.log  UTILS.JS');
   });
 }
 
-function logRequest(req,res) {
+function logRequest(req) {
   const datos = [];
-  datos.push('\n','--- Request Log ---');//Marca el inicio del log de la petición
+  datos.push('\n', '--- Request Log ---');//Marca el inicio del log de la petición
   datos.push(`Request URL: ${req.url}`);//Guarda en un log la URL de la petición
   datos.push(`Request Method: ${req.method}`);//Guarda en un log el método de la petición
   datos.push(`Request Date: ${new Date().toISOString()}`);//Guarda en un log la fecha de la petición
   datos.push(`Client IP: ${req.ip}`);//Guarda en un log la IP del cliente
   fs.appendFile('request.log', datos.join('\n'), (err) => {
-     if (err) throw err;
-     console.log('Request logged successfully.  UTILS.JS');
+    if (err) throw err;
+    console.log('Peticion guardada en el log request.log  UTILS.JS');
   });
 }
 
-function logError(err, req) { //pendiente de implementar
+function logError(err, req) {
   const errorLog = [];
-  console.log('Logging error:',err);
   errorLog.push('\n', '--- Error Log ---');//Marca el inicio del log de errores
   errorLog.push(`Error Message: ${err.message || 'No error message provided'}`);//Guarda en un log el mensaje de error
   errorLog.push(`Request URL: ${req.url || 'No url'}`);//Guarda en un log la URL de la petición que causó el error
@@ -43,15 +42,14 @@ function logError(err, req) { //pendiente de implementar
   errorLog.push(`Request Date: ${new Date().toISOString()}`);//Guarda en un log la fecha de la petición que causó el error
   fs.appendFile('request.log', errorLog.join('\n'), (err) => {
     if (err) throw err;
-    logError(new Error("Error al guardar el log de errores"), { url: req.url, method: req.method });
-    console.log('Error logged successfully.  UTILS.JS');
+    logInfo(`Error al guardar en el log de errores`, err);
   });
 }
 
 function tokenGenerator(user) {
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '3h' });
   if (!token) {
-    logError(new Error("Token generation failed"), { url: '/auth/login', method: 'POST' });
+    logError("Token generation failed");
     return null; // Return null if token generation fails
   }
   return token;
