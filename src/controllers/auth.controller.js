@@ -16,11 +16,11 @@ export async function register(req, res) {
 	const existUser = await findUserByEmail(email);
 	if (existUser) {
 		return res.status(400).json({ message: "El usuario ya existe" })
-	}else{
-	const passwordHash = await bcrypt.hash(password, 10);
-	const user = await createUser({ email, password: passwordHash, role: "user", enabled: true });
-	logInfo(`Usuario creado: ${user.email}`); // Log the user creation
-	return res.status(201).json({ message: "Usuario creado", email: user.email })
+	} else {
+		const passwordHash = await bcrypt.hash(password, 10);
+		const user = await createUser({ email, password: passwordHash, role: "user", enabled: true });
+		logInfo(`Usuario creado: ${user.email}`); // Log the user creation
+		return res.status(201).json({ message: "Usuario creado", email: user.email })
 	}
 }
 export async function login(req, res) {
@@ -30,21 +30,24 @@ export async function login(req, res) {
 		return res.status(400).json({ message: "Email y contraseña requeridos" });
 	}
 	const user = await findUserByEmail(email);//busca el usuario por email en la base de datos
-	if (!user) {//si no fue encontrado, devuelve un error 404 Not Found
-		logError(new Error("Usuario no encontrado"), req);
-		return res.status(404).json({ message: "Usuario inexistente" });
-	}
-	if (!(await bcrypt.compare(password, user.passwordHash))) {
-		console.log('password', password, 'user.passwordHash', user.passwordHash);
+
+	if (!user) {// si no se encuentra el usuario devuelve un error 401 Unauthorized
+		logError(new Error("Email o contraseña inválidos"), req);
 		return res.status(401).json({ message: 'Email o contraseña inválidos' });
+	} else {
+		const comparacion = await bcrypt.compare(password, user.password)
+		const token = tokenGenerator(user);
+		try {
+			if (!token) {
+				throw new Error("Error al generar el token");
+			}
+
+			logInfo(`Usuario autenticado: ${user.email}`); // Log de autenticación
+			res.json({ message: "Inicio de sesión exitoso", token }); // Devuelve el token
+		} catch (error) {
+			logError(error, req);
+			res.status(500).json({ message: "Error al generar el token" });
+		}
 	}
 
-	const token = tokenGenerator(user);
-	if (!token) {// If token generation fails, log the error and return a 500 Internal Server Error response
-		logError(new Error("Error al generar el token"), req);
-		return res.status(500).json({ message: "Error al generar el token" });
-	} else {
-		logInfo(`Usuario autenticado: ${user.email}`); // Log the user authentication
-		res.json({ message: "Inicio de sesión exitoso", token });// Return the token in the response
-	}
 }

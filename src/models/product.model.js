@@ -1,6 +1,6 @@
 import { logError, logInfo, logRequest } from '../../util.js';
 import { db } from './firebase.js'; // Importa la instancia de Firestore si es necesario
-import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, where,getDoc } from 'firebase/firestore'; // Importa las funciones necesarias de Firestore. Crear, traer, eliminar y actualizar documentos
+import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, where, getDoc } from 'firebase/firestore'; // Importa las funciones necesarias de Firestore. Crear, traer, eliminar y actualizar documentos
 
 const productsCollection = collection(db, "products"); // Colección de productos en Firestore
 
@@ -15,7 +15,7 @@ export const getAllProducts = async () => {
     }
 }
 export const createProduct = async (producto) => {
- try {
+    try {
         // Obtener todos los documentos actuales
         const snapshot = await getDocs(productsCollection);
         const docs = snapshot.docs;
@@ -44,7 +44,7 @@ export const createProduct = async (producto) => {
     }
 }
 export const getProductById = async (id) => {
-   try {
+    try {
         const idAsNumber = parseInt(id); // aseguramos que es un número
         const productQuery = query(productsCollection, where("id", "==", idAsNumber));// Crea una consulta para buscar productos por ID de campo
         const querySnapshot = await getDocs(productQuery);// Ejecuta la consulta para obtener los productos con el ID especificado
@@ -59,17 +59,15 @@ export const getProductById = async (id) => {
         return null;
     }
 }
-export const updateProduct = async (id, updatedProduct) => {  //pendiente de implementar
+export const updateProduct = async (id, updatedProduct) => {
     try {
-        const idAsNumber = parseInt(id); // si tus IDs internos son números
+        const idAsNumber = parseInt(id);
         const productQuery = query(productsCollection, where("id", "==", idAsNumber));
         const snapshot = await getDocs(productQuery);
-
         if (snapshot.empty) {
             logInfo(`No se encontró producto con id interno: ${id}`);
             return null;
         }
-
         const docRef = snapshot.docs[0]; // Suponemos que el ID interno es único
         const ref = doc(db, "products", docRef.id);
         await updateDoc(ref, updatedProduct);
@@ -81,47 +79,41 @@ export const updateProduct = async (id, updatedProduct) => {  //pendiente de imp
         return null;
     }
 }
-export const deleteProduct = async (id) => {
-    try {
-        const idAsNumber = parseInt(id); // Aseguramos que sea número si corresponde
-        const productQuery = query(productsCollection, where("id", "==", idAsNumber));
-        const snapshot = await getDocs(productQuery);
-
-        if (snapshot.empty) {
-            logInfo(`No se encontró producto con id interno: ${id}`);
-            return null;
-        }
-
-        const docRef = snapshot.docs[0]; // Suponemos que el id es único
-        await deleteDoc(doc(db, "products", docRef.id));
-        logInfo(`Producto eliminado. ID interno: ${id}, ID Firestore: ${docRef.id}`);
-        return { id };
-
-    } catch (error) {
-        logError({ message: "Error al eliminar producto", error });
-        return null;
+export const deleteProduct = async (id, req) => {
+    const idAsNumber = parseInt(id);
+    const q = query(productsCollection, where('id', '==', idAsNumber));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+        return false; // No se encontró ningún producto con ese id interno
     }
+    // Eliminamos todos los documentos que tengan ese id interno (por si hay más de uno)
+    for (const productDoc of snapshot.docs) {
+        await deleteDoc(productDoc.ref);
+    }
+    return true;
 }
 export const getProductByName = async (name) => {
     try {
-        const productQuery = query(productsCollection, where("nombre", "==", name));
-        const snapshot = await getDocs(productQuery);
+        const nombre = name.toLowerCase(); // Normaliza el nombre a minúsculas para la búsqueda
+        // Traer todos y filtrar en memoria
+        const snapshot = await getDocs(productsCollection);
+        const results = [];
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.name && data.name.toLowerCase() === nombre) {
+                results.push({ id: doc.id, ...data });
+            }
+        });
 
-        if (snapshot.empty) {
-            logInfo(`No se encontraron productos con el nombre: ${name}`);
-            return [];
+        if (results.length === 0) {
+            logInfo(`No se encontró producto con nombre: ${nombre}`);
+            return null;
         }
-
-        const products = snapshot.docs.map(doc => ({
-            firestoreId: doc.id,
-            ...doc.data()
-        }));
-
-        logInfo(`Productos encontrados con nombre "${name}":`, products);
-        return products;
+        return results; // Devuelve todos los productos que coinciden con el nombre
 
     } catch (error) {
-        logError({ message: "Error al buscar producto por nombre", error });
+        //logError({ message: "Error al buscar producto por nombre", error });
+        console.error("Error al buscar producto por nombre:", error);
         return null;
     }
 }

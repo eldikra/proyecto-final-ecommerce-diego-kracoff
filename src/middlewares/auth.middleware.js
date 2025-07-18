@@ -6,7 +6,6 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
 
 const authentication = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1]; // Asumiendo que el token se envía en el header Authorization como "Bearer <token>"
-  console.log('token:', token);
   if (!token || token === undefined) {
     logError('No se proporcionó token de autenticación ----------', req);
     return res.sendStatus(401)//.json({ error: 'No se proporcionó token de autenticación ----------' });

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
+import { Console } from 'console';
 
 const JWT_SECRET = process.env.JWT_SECRET
 function isValidEmail(email) {
@@ -36,9 +37,9 @@ function logRequest(req) {
 function logError(err, req) {
   const errorLog = [];
   errorLog.push('\n', '--- Error Log ---');//Marca el inicio del log de errores
+  errorLog.push(`Error URL: ${err.url || 'No URL provided'}`);//Guarda en un log la URL de la petición que causó el error
   errorLog.push(`Error Message: ${err.message || 'No error message provided'}`);//Guarda en un log el mensaje de error
-  errorLog.push(`Request URL: ${req.url || 'No url'}`);//Guarda en un log la URL de la petición que causó el error
-  errorLog.push(`Request Method: ${req.method || 'no method'}`);//Guarda en un log el método de la petición que causó el error
+  errorLog.push(`Request Method: ${err.method || 'no method'}`);//Guarda en un log el método de la petición que causó el error
   errorLog.push(`Request Date: ${new Date().toISOString()}`);//Guarda en un log la fecha de la petición que causó el error
   fs.appendFile('request.log', errorLog.join('\n'), (err) => {
     if (err) throw err;
