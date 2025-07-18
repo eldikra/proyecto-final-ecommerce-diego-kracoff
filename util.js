@@ -17,7 +17,7 @@ function logInfo(message) {
   infoLog.push(`Request Date: ${new Date().toISOString()}`);//Guarda en un log la fecha de la petición
   fs.appendFile('request.log', infoLog.join('\n'), (err) => {
     if (err) throw err;
-    console.log('Informacion guardada en el log request.log  UTILS.JS');
+    logError(`Error al guardar en el log de informacion`, err);
   });
 }
 
@@ -30,7 +30,7 @@ function logRequest(req) {
   datos.push(`Client IP: ${req.ip}`);//Guarda en un log la IP del cliente
   fs.appendFile('request.log', datos.join('\n'), (err) => {
     if (err) throw err;
-    console.log('Peticion guardada en el log request.log  UTILS.JS');
+    logError(`Error al guardar en el log de peticiones`, err);
   });
 }
 
