@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "75885338-90a4-47e5-b100-7f9deb439106",
+		"_postman_id": "",
 		"name": "NodeJs - TalentoTech Vercel",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "31070578"
@@ -174,7 +174,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"eldikra@gmail.com\",\r\n    \"password\":\"TalentoTech2025\"\r\n}",
+					"raw": "{\r\n    \"email\":\"aaaaa@gmail.com\",\r\n    \"password\":\"********\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -323,7 +323,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk5akJqY2JHajFoamloZ1VDb1hwIiwiaWF0IjoxNzUyODIxOTY3LCJleHAiOjE3NTI4MzI3Njd9.KQY1LfquuKnNWkJENLiQwDHKzgJtkJ7raJO8JpdNDRI",
+				"value": "",
 				"type": "string"
 			}
 		]
@@ -353,7 +353,7 @@
 	"variable": [
 		{
 			"key": "baseURL",
-			"value": "https://proyecto-final-ecommerce-diego-krac.vercel.app",
+			"value": "",
 			"type": "default"
 		}
 	]
